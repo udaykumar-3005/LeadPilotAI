@@ -1,0 +1,66 @@
+[
+  {
+    "name": "Kavya Menon (Demo)",
+    "location": "Whitefield",
+    "requirement": "2 BHK ready-to-move apartment near metro with balcony and covered parking",
+    "budget_lakh": 88.0,
+    "timeline": "Within 25 days",
+    "message": "Fictional demo enquiry. I want to buy a 2 BHK in Whitefield within 25 days because my current lease is ending. Maple Court P001 interests me. My home loan of 60 lakh is approved and I have 28 lakh in savings. My total limit is 88 lakh including registration and other charges. Please send the carpet area, monthly maintenance and a written cost breakdown. I would like a viewing this Saturday at 10 AM, but it is not booked yet. I will decide after viewing the flat and reviewing the documents. Please email kavya.demo@example.com; calls after 6 PM are convenient. Do not assume the base price includes registration."
+  },
+  {
+    "name": "Dev Malhotra (Demo)",
+    "location": "Miyapur",
+    "requirement": "2 BHK ready-to-move apartment near metro with lift and parking",
+    "budget_lakh": 72.0,
+    "timeline": "Within 45 days",
+    "message": "Fictional demo enquiry. Mujhe Miyapur mein 2 BHK kharidna hai within 45 days. Metro Edge P006 shortlist kiya hai. My 50 lakh home loan is approved and 22 lakh savings are available. Mera total budget 72 lakh hai, registration aur parking mila kar. Metro tak actual walking distance, water supply aur maintenance charges bataiye. Sunday afternoon site visit request karna hai; abhi confirm mat samajhna. Reply simple Hinglish mein dijiye at dev.demo@example.com. Main documents verify karne ke baad decision lunga."
+  },
+  {
+    "name": "Meera Kulkarni (Demo)",
+    "location": "Wakad",
+    "requirement": "3 BHK apartment near a school with balcony and children's play area",
+    "budget_lakh": 105.0,
+    "timeline": "Within 4 months",
+    "message": "Fictional demo enquiry. I plan to buy a 3 BHK in Wakad within 4 months. I am considering Green Courtyard P009. I have 30 lakh saved and my application for a 75 lakh loan is pending. The total cost must stay within 105 lakh. I need to move within 4 months, so please check whether the project's possession schedule fits. Do not treat an expected possession date as a guarantee. Send the construction status, extra charges and school distance to meera.demo@example.com before suggesting a visit. I have not booked a unit."
+  },
+  {
+    "name": "Nikhil Sethi (Demo)",
+    "location": "Gachibowli",
+    "requirement": "3 BHK apartment with lift, covered parking and space for a home office",
+    "budget_lakh": 112.0,
+    "timeline": "Within 5 months",
+    "message": "Fictional demo enquiry. I plan to buy a 3 BHK in Gachibowli within 5 months and am comparing Palm Residency P007 with other projects. My maximum budget is 112 lakh including registration. I have not decided how to finance the purchase and have not applied for a loan. Please explain the carpet area, possession schedule and recurring maintenance cost. I need room for a desk but do not require a separate study. Email nikhil.demo@example.com first. I may request a visit after seeing the full cost sheet; there is no appointment yet."
+  },
+  {
+    "name": "Tara Bose (Demo)",
+    "location": "OMR",
+    "requirement": "2 BHK apartment with parking and power backup near offices",
+    "budget_lakh": 62.0,
+    "timeline": "Around 8 months from now",
+    "message": "Fictional demo enquiry. I intend to buy a 2 BHK on OMR around 8 months from now. Sunrise Apartments P010 looks interesting, but I am still building my down payment and have not applied for financing. My tentative total budget is 62 lakh including charges. Please send a brochure and explain maintenance, water supply and power backup. I do not want a site visit this month. Email tara.demo@example.com and follow up next month. Please do not claim that today's price or availability will be held for 8 months."
+  },
+  {
+    "name": "Ishaan Kapoor (Demo)",
+    "location": "Sarjapur",
+    "requirement": "3 BHK apartment with a study corner and clubhouse",
+    "budget_lakh": 160.0,
+    "timeline": "Undecided",
+    "message": "Fictional demo enquiry. I am only exploring property prices in Sarjapur and have not decided whether to buy. Cedar Heights P003 is one example I saw. The 160 lakh figure is a rough research ceiling, not a committed purchase budget. I have not arranged financing or chosen a buying date. Please email a brochure and a comparison of carpet areas to ishaan.demo@example.com. No calls or site visits for now. A high budget does not mean I am ready to proceed."
+  },
+  {
+    "name": "Sana Qureshi (Demo)",
+    "location": "Electronic City",
+    "requirement": "2 BHK ready-to-move apartment with lift and parking",
+    "budget_lakh": 45.0,
+    "timeline": "Undecided",
+    "message": "Fictional demo enquiry. Abhi main sirf options explore kar rahi hoon, buy karne ka decision nahi liya. Electronic City mein 2 BHK chahiye, lekin maximum 45 lakh including all charges. Urban Nest P004 ka naam suna hai; agar mere budget mein nahi hai toh clearly bataiye. I have no financing arranged and no buying date. Budget badhane ke liye pressure mat dijiye. Please reply in Hinglish to sana.demo@example.com. I have not requested any site visit. Do not invent a discount or a cheaper listing."
+  },
+  {
+    "name": "Aarav Desai (Demo)",
+    "location": "Hinjewadi",
+    "requirement": "2 BHK apartment with balcony and parking",
+    "budget_lakh": 78.0,
+    "timeline": "Undecided after relocation was postponed",
+    "message": "Fictional demo enquiry transcript. Earlier message: I want to buy within 30 days and my loan is approved. Latest correction: My relocation has been postponed. The loan approval expired and no financing is currently arranged. I am now only exploring, with no buying date. Please use this latest update instead of the earlier message. My research budget is 78 lakh including extra charges and Riverstone P008 is just an option. Cancel the idea of a visit this weekend; nothing was booked. Email aarav.demo@example.com with a brochure only."
+  }
+]

@@ -1,0 +1,80 @@
+[data-testid="stAppViewContainer"] {
+    background: linear-gradient(135deg, #f0f4ff 0%, #f7fafc 55%, #edf9f6 100%);
+}
+[data-testid="stHeader"] { background: transparent; }
+[data-testid="stMainBlockContainer"] { padding-top: 2.5rem; max-width: 1500px; }
+[data-testid="stSidebar"] {
+    background: linear-gradient(160deg, #e6eaff, #f2f5ff 55%, #dff5ee);
+    border-right: 1px solid #d5dff0;
+}
+[data-testid="stSidebar"] h1 { color: #263e89; font-size: 1.8rem; }
+[data-testid="stSidebar"] [role="radiogroup"] { gap: .5rem; }
+[data-testid="stSidebar"] [role="radiogroup"] label {
+    padding: .65rem .85rem;
+    border-radius: 12px;
+    border: 1px solid transparent;
+}
+[data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked),
+[data-testid="stSidebar"] [role="radio"][aria-checked="true"] {
+    background: #fff;
+    border-color: #c4cfee;
+    box-shadow: 0 3px 12px #263e8910;
+}
+.hero {
+    background: linear-gradient(115deg, #283c86, #3657ad 52%, #087f8c);
+    border-radius: 20px;
+    padding: 2rem 2.2rem;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 10px 28px #243b7b18;
+}
+.hero .eyebrow { color: #bcefe7; font-size: .75rem; letter-spacing: .15em; font-weight: 700; }
+.hero h1 { color: white; font-size: 2.15rem; margin: .4rem 0 .65rem; padding: 0; line-height: 1.25; }
+.hero p { color: #e2eaff; margin: 0; max-width: 650px; }
+.st-key-pipeline_metrics [data-testid="stMetric"] {
+    padding: 1.1rem 1.3rem;
+    border-radius: 16px;
+    border: 1px solid #d7def8;
+    border-top: 4px solid #5764cb;
+    background: #eef0ff;
+    box-shadow: 0 4px 16px #283c8608;
+}
+.st-key-pipeline_metrics [data-testid="stColumn"]:nth-child(2) [data-testid="stMetric"] {
+    background: #fff0ec; border-color: #f5d4c8; border-top-color: #dd6546;
+}
+.st-key-pipeline_metrics [data-testid="stColumn"]:nth-child(3) [data-testid="stMetric"] {
+    background: #fff7df; border-color: #ecdca6; border-top-color: #be8a20;
+}
+.st-key-pipeline_metrics [data-testid="stColumn"]:nth-child(4) [data-testid="stMetric"] {
+    background: #e6f6ef; border-color: #bde4d4; border-top-color: #138363;
+}
+[data-testid="stMetricValue"] { font-weight: 700; }
+[data-testid="stForm"], [data-testid="stExpander"],
+[data-testid="stVerticalBlockBorderWrapper"] > div { border-radius: 14px; }
+[data-testid="stForm"] { background: white; border-color: #d8e0ef; padding: 1.4rem; }
+[data-testid="stDataFrame"] { border-radius: 14px; overflow: hidden; border: 1px solid #d8e0ef; }
+[role="tablist"] { gap: .5rem; border-bottom: 1px solid #d7e0ef; padding-bottom: .5rem; }
+[role="tab"] { border-radius: 10px; padding: .65rem 1rem; }
+[role="tab"][aria-selected="true"] { color: #264a9c; background: #e4ebff; font-weight: 600; }
+[role="tabpanel"] {
+    background: #ffffffd9;
+    border: 1px solid #e0e6f0;
+    border-radius: 16px;
+    padding: 1.4rem;
+    margin-top: .5rem;
+}
+[data-testid="stChatMessage"] { border: 1px solid #dce4f2; border-radius: 16px; background: #fff; }
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) { background: #eef2ff; }
+[data-testid="stChatInput"] { border-radius: 14px; border: 1px solid #859ad1; background: white; }
+[data-testid="stBaseButton-primary"], [data-testid="stBaseButton-primaryFormSubmit"] {
+    background: linear-gradient(100deg, #3657ad, #087f8c);
+    border: none;
+    box-shadow: 0 4px 12px #3657ad20;
+}
+[data-testid="stImage"] img { border-radius: 12px; }
+@media (max-width: 640px) {
+    [data-testid="stMainBlockContainer"] { padding: 1.5rem 1rem; }
+    .hero { padding: 1.4rem; }
+    .hero h1 { font-size: 1.7rem; }
+    [role="tabpanel"] { padding: 1rem; }
+    [role="tab"] { padding: .5rem; }
+}

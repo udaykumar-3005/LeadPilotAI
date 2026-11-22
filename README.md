@@ -1,137 +1,84 @@
 # LeadPilot AI
 
-**AI-assisted lead qualification and follow-up for real estate teams.**
+LeadPilot AI helps a real estate salesperson decide which buyer to contact next and what to ask. Enter an enquiry to get a priority score, the buyer’s stated requirements, open questions, and a suggested reply. The dashboard keeps the analysis alongside the next action and its due date.
 
-LeadPilot AI turns customer enquiries into structured lead insights, explainable priorities, relevant sample-property matches, and actionable follow-ups.
+[How it works](#how-it-works) · [Scoring](#how-lead-scoring-works) · [Quick start](#quick-start) · [Configuration](#configuration)
 
-## At a glance
-
-- **Understand each enquiry:** summarize intent, requirements, concerns, and missing details.
-- **Prioritize transparently:** calculate a repeatable lead score with Python rules.
-- **Respond with context:** draft customer replies and answer questions using the selected lead's information.
-- **Keep work moving:** create and track dated follow-up actions.
-- **Find relevant listings:** filter a fictional property catalogue, then rank eligible matches semantically.
-
-## Architecture
+## How it works
 
 ```mermaid
-flowchart LR
-    Person[Sales user] --> App["Streamlit app<br/>app.py"]
-
-    App --> Intake["Lead intake"]
-    Intake --> InputValidation["Pydantic input validation"]
-    InputValidation --> Workflow["LangGraph analysis workflow"]
-    Workflow --> Gemini["Gemini API"]
-    Gemini --> OutputValidation["Structured output + evidence checks"]
-    OutputValidation -->|Invalid: retry once| Workflow
-    OutputValidation -->|Valid| Score["Deterministic Python scoring"]
-    Score --> Save["Save lead"]
-    Save --> Storage[("SQLite locally<br/>or Supabase when configured")]
-    Storage --> Dashboard["Lead dashboard"]
-
-    App --> Chat["Lead-context chat"]
-    Chat --> Gemini
-    Chat -. Optional property search .-> Retrieval["Property retrieval"]
-    Catalogue[("Fictional property catalogue")] --> Retrieval
-    Retrieval --> Filters["Budget, location,<br/>and bedroom filters"]
-    Filters --> Ranking["Sentence Transformers<br/>and FAISS ranking"]
-    Ranking --> Chat
-
-    App --> Planner["Follow-up planner"]
-    Planner --> Storage
+flowchart TD
+    A["Enquiry in Streamlit"] --> B["Pydantic validates the inputs"]
+    subgraph G["LangGraph analysis workflow"]
+        C["Gemini extracts buyer signals and drafts a reply"] --> D{"Schema and evidence valid?"}
+        D -->|Yes| E["Python calculates priority"]
+        D -->|First invalid result| C
+        D -->|Second invalid result| F["Show error"]
+    end
+    B --> C
+    E --> H[("Lead record in SQLite or Supabase")]
+    H --> I["Dashboard and follow-up planner"]
+    I -->|Save action and due date| H
+    I --> J["Chat about a selected lead"]
+    K["Optional catalogue matches"] -.-> J
+    J --> L["Gemini answers using lead context"]
 ```
 
-The analysis path checks model output against typed schemas and evidence from the enquiry before computing a score. Scoring stays in application code, so the same validated analysis produces the same priority. Property search applies hard eligibility filters before semantic ranking; it does not use similarity to bypass budget, location, or bedroom constraints.
+1. **Capture the enquiry.** The [Streamlit form](app.py) takes a name, location, property requirement, budget in INR lakh, buying timeline, and customer message. It also offers [fictional sample enquiries](data/hybrid_leads.json).
+2. **Extract and validate.** Gemini returns a structured analysis. [Pydantic](src/models.py) checks the fields and looks for a supporting quote in the enquiry for each known intent, timeline, and financing value. [LangGraph](src/workflow.py) retries invalid output once. An API error or a second invalid result ends the workflow before anything is saved.
+3. **Score and follow up.** Python calculates the points below. The dashboard shows the breakdown under **Why this score?** A salesperson can review the suggested reply, choose a next action, set a date, and mark the follow-up complete.
 
-## Technology
+## How lead scoring works
 
-| Area | Tools |
+The [scoring function](src/scoring.py) adds four signals from the validated analysis. The score measures follow-up priority on a 100-point scale. Each row contributes once.
+
+| Signal | Points awarded |
 | --- | --- |
-| User interface | Python, Streamlit |
-| AI analysis and chat | Google Gemini API |
-| Workflow | LangGraph |
-| Data validation | Pydantic |
-| Lead scoring | Deterministic Python rules |
-| Local persistence | SQLite |
-| Optional hosted persistence | Supabase REST API |
-| Property retrieval | Sentence Transformers, NumPy, FAISS |
+| Purchase intent | Buying **35** · Exploring **10** · Unknown **0** |
+| Buying timeline | 0–30 days **30** · 31–90 days **20** · 91–180 days **10** · Later or unknown **0** |
+| Financing | Ready **25** · Pending **10** · Unknown **0** |
+| Stated requirements | One or more extracted requirements **10** · None **0** |
 
-## Run locally
+**Hot** is 70–100, **Warm** is 40–69, and **Cold** is 0–39. Budget affects which properties qualify for retrieval. It contributes no priority points.
 
-Use Python 3.13 with the pinned dependencies.
+**Worked example.** In the bundled Dev Malhotra enquiry, the buyer wants a 2 BHK in Miyapur within 45 days and reports an approved loan plus savings. If Gemini extracts buying intent, a 45-day timeline, ready financing, and the 2 BHK requirement, the rule gives **35 + 20 + 25 + 10 = 90 (Hot)**. The arithmetic is repeatable for the same extracted facts. A salesperson can inspect the supporting quotes when a classification looks surprising.
 
-**Windows PowerShell**
+## Chat and property matching
 
-    python -m venv .venv
-    .venv\Scripts\Activate.ps1
-    pip install -r requirements.txt
-    Copy-Item .env.example .env
-    streamlit run app.py
+[Lead chat](src/chatbot.py) sends Gemini the selected buyer’s enquiry, saved analysis, follow-up, and the last ten messages from that lead’s conversation. Chat history belongs to the browser session. Leads and follow-ups are saved in the [database](src/database.py).
 
-**macOS or Linux**
+When catalogue search is enabled, [property retrieval](src/rag.py) filters the [sample listings](data/sample_properties.csv) by budget, location, and any explicit bedroom count. Sentence Transformers embeds the question and listing descriptions. FAISS ranks the eligible listings and returns up to three. If semantic search is unavailable, the app shows the eligible listings in price order.
 
-    python -m venv .venv
-    source .venv/bin/activate
-    pip install -r requirements.txt
-    cp .env.example .env
-    streamlit run app.py
+## Quick start
 
-Add your Gemini API key to .env before using AI analysis or chat:
+From the repository root, create a Python 3.13 environment. On Windows PowerShell:
 
-    GEMINI_API_KEY=your_key_here
-    GEMINI_MODEL=gemini-3.5-flash-lite
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+if (!(Test-Path .env)) { Copy-Item .env.example .env }
+```
 
-Then open http://localhost:8501. The first semantic property search may download the embedding model.
+On macOS or Linux:
+
+```bash
+python3.13 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+test -f .env || cp .env.example .env
+```
+
+Set `GEMINI_API_KEY` in `.env`, then start the app with `.\start.ps1` on Windows or `python -m streamlit run app.py` in the activated environment on macOS or Linux. Open [localhost:8501](http://localhost:8501). To try the scoring example, select Dev in **New lead**, choose **Fill hybrid enquiry**, then **Analyze and save lead**.
 
 ## Configuration
 
-| Variable | Purpose |
+| Setting | When to use it |
 | --- | --- |
-| GEMINI_API_KEY | Enables Gemini analysis and chat |
-| GEMINI_MODEL | Optional Gemini model selection |
-| SUPABASE_URL | Optional Supabase project URL |
-| SUPABASE_SERVICE_ROLE_KEY | Optional server-side Supabase credential |
-| DATABASE_PATH | Optional SQLite file path; defaults to data/leads.db |
+| `GEMINI_API_KEY` | Required for AI analysis and chat. |
+| `GEMINI_MODEL` | Override the Gemini model used by the app. |
+| `DATABASE_PATH` | Change the default SQLite path, `data/leads.db`. |
+| `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` | Run [schema.sql](schema.sql) in Supabase, then set both values to store leads and follow-ups there. |
 
-Configure both Supabase variables together to use hosted persistence. If they are unset, the app uses SQLite. Store credentials in environment variables or your hosting provider's secret manager; do not commit them.
+**Streamlit Community Cloud.** Select this repository, branch `main`, entry point `app.py`, and Python 3.13. Enter credentials in the app’s **Secrets** settings. Use Supabase for records that must survive cloud restarts. The app has a shared dashboard without sign-in, so use fictional enquiries on public deployments.
 
-## Deploy
-
-To deploy with Streamlit Community Cloud:
-
-1. Connect the GitHub repository udaykumar-3005/LeadPilotAI.
-2. Choose the main branch and app.py entry point.
-3. Add GEMINI_API_KEY and optional GEMINI_MODEL under app Secrets.
-4. Configure both Supabase variables if lead data needs to persist across cloud restarts.
-
-## Repository layout
-
-    LeadPilotAI/
-    |-- app.py                       Streamlit interface
-    |-- assets/style.css             Application styling
-    |-- data/
-    |   |-- sample_properties.csv    Fictional property catalogue
-    |   \-- hybrid_leads.json        Fictional sample enquiries
-    |-- src/
-    |   |-- ai.py                    Gemini API calls
-    |   |-- chatbot.py               Lead-specific chat context
-    |   |-- database.py              SQLite and Supabase persistence
-    |   |-- models.py                Input/output schemas and evidence checks
-    |   |-- prompts.py               Model prompts
-    |   |-- rag.py                   Property filters and semantic ranking
-    |   |-- scoring.py               Lead priority rules
-    |   \-- workflow.py              LangGraph analysis workflow
-    |-- tests/                       Automated tests
-    |-- schema.sql                   Supabase schema and access policy
-    \-- requirements.txt             Runtime dependencies
-
-## Tests
-
-    pip install -r requirements-dev.txt
-    python -m pytest -q
-
-## Notes
-
-- The included enquiries and property catalogue are fictional examples.
-- The app does not include user authentication. Do not use real customer data on a publicly accessible deployment without adding appropriate access controls.
-- SQLite files on hosted instances may not be durable across restarts. Use Supabase when persistent hosted storage is required.
+**Development.** Install [requirements-dev.txt](requirements-dev.txt) in the project environment to include pytest, then run `python -m pytest -q`. The [test suite](tests/) covers scoring boundaries, analysis retries, property retrieval, persistence, chat context, and the Streamlit workflow.

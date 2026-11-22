@@ -2,7 +2,7 @@
 
 LeadPilot AI helps a real estate salesperson decide which buyer to contact next and what to ask. Enter an enquiry to get a priority score, the buyer’s stated requirements, open questions, and a suggested reply. The dashboard keeps the analysis alongside the next action and its due date.
 
-**[Watch the product demo (2 min 57 sec)](https://youtu.be/ycotIAq30h0)**
+**[Try the live app](https://leadpilot-ai-uday.streamlit.app/)** · **[Watch the product demo (2 min 57 sec)](https://youtu.be/ycotIAq30h0)**
 
 ![LeadPilot dashboard showing the pipeline metrics, filters, and workspace navigation](assets/dashboard-preview.png)
 

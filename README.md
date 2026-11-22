@@ -4,6 +4,8 @@ LeadPilot AI helps a real estate salesperson decide which buyer to contact next 
 
 **[Watch the product demo (2 min 57 sec)](https://youtu.be/ycotIAq30h0)**
 
+![LeadPilot dashboard showing the pipeline metrics, filters, and workspace navigation](assets/dashboard-preview.png)
+
 [How it works](#how-it-works) · [Scoring](#how-lead-scoring-works) · [Quick start](#quick-start) · [Configuration](#configuration)
 
 ## How it works
@@ -42,6 +44,8 @@ The [scoring function](src/scoring.py) adds four signals from the validated anal
 | Stated requirements | One or more extracted requirements **10** · None **0** |
 
 **Hot** is 70–100, **Warm** is 40–69, and **Cold** is 0–39. Budget affects which properties qualify for retrieval. It contributes no priority points.
+
+In the video, Rahul scores **65/100 (Warm)**. Buying intent adds 35 points, his three-month timeline adds 20, and his stated requirements add 10. Financing adds 0 because he has yet to discuss it.
 
 **Worked example.** In the bundled Dev Malhotra enquiry, the buyer wants a 2 BHK in Miyapur within 45 days and reports an approved loan plus savings. If Gemini extracts buying intent, a 45-day timeline, ready financing, and the 2 BHK requirement, the rule gives **35 + 20 + 25 + 10 = 90 (Hot)**. The arithmetic is repeatable for the same extracted facts. A salesperson can inspect the supporting quotes when a classification looks surprising.
 
